@@ -269,10 +269,7 @@
                     <label>Дедлайн</label>
                     <input type="date" id="hw-deadline">
                 </div>
-                <div class="form-group">
-                    <label>Ответственный (студент)</label>
-                    <input type="text" id="hw-responsible" placeholder="ФИО или ник">
-                </div>
+
                 <button class="btn btn-primary" onclick="addHomework()">Добавить ДЗ</button>
             </div>
             <!-- Карточка добавления пропуска -->
@@ -322,43 +319,6 @@
                 <button class="btn btn-primary" onclick="addWarning()">Добавить предупреждение</button>
             </div>
 
-            <!-- Карточка загрузки материалов -->
-            <div class="admin-card">
-                <h2>📁 Загрузить учебный материал</h2>
-                <div class="form-group">
-                    <label>Предмет</label>
-                    <select id="material-subject">
-                        <option value="ТСИ">ТСИ</option>
-                        <option value="КГ">КГ</option>
-                        <option value="ТА">ТА</option>
-                        <option value="Английский язык">Английский язык</option>
-                        <option value="История Кыргызстана">История Кыргызстана</option>
-                        <option value="География">География</option>
-                        <option value="Кыргызский язык">Кыргызский язык</option>
-                        <option value="БЖД">БЖД</option>
-                        <option value="Физическая культура">Физическая культура</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Тип материала</label>
-                    <select id="material-type">
-                        <option value="Конспект лекции">Конспект лекции</option>
-                        <option value="Отчет по лабораторной">Отчет по лабораторной</option>
-                        <option value="Фото/Скан">Фото/Скан</option>
-                        <option value="Доп. материалы">Доп. материалы</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Название (как будет отображаться)</label>
-                    <input type="text" id="material-name" placeholder="Например: Лекция 1: Основы Python">
-                </div>
-                <div class="form-group">
-                    <label>Выберите файл</label>
-                    <input type="file" id="material-file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                </div>
-                <button class="btn btn-primary" onclick="uploadMaterial()">Загрузить</button>
-                <div id="upload-progress" style="margin-top: 1rem; display: none;">Загрузка...</div>
-            </div>
 
             <!-- Карточка управления студентами -->
             <div class="admin-card">
