@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пропуски | ПКС-7-24</title>
+    <link rel="icon" type="image/png" href="фото/IMG_1754.PNG">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .view-toggle button {
+            background: white;
+            border: 1px solid #E0E0E0;
+            border-radius: 40px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .view-toggle button.active {
+            background: #A51C30;
+            border-color: #A51C30;
+            color: white;
+        }
+        
+        .journal-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+        
+        .journal-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 600px;
+        }
+        
+        .journal-table th,
+        .journal-table td {
+            border: 1px solid #E0E0E0;
+            padding: 8px 6px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        .journal-table th {
+            background: #1E2B3A;
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        
+        .journal-table td {
+            background: white;
+        }
+        
+        .journal-table .student-col {
+            font-weight: 600;
+            background: #F8F7F4;
+            text-align: left;
+            position: sticky;
+            left: 0;
+            background-color: #F8F7F4;
+        }
+        
+        .absence-mark {
+            background: rgba(165, 28, 48, 0.15);
+            color: #A51C30;
+            font-weight: 600;
+            border-radius: 4px;
+            display: inline-block;
+            padding: 2px 6px;
+            white-space: nowrap;
+        }
+        
+        .empty-mark {
+            color: #ccc;
+        }
+        
+        .absence-day {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .absence-day-header {
+            background: #1E2B3A;
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .absence-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .absence-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        
+        .absence-item:last-child {
+            border-bottom: none;
+        }
+        
+        .student-name {
+            font-weight: 500;
+            color: #1E2B3A;
+        }
+        
+        .absence-details {
+            display: flex;
+            gap: 0.8rem;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+        
+        .absence-pair {
+            background: rgba(165, 28, 48, 0.1);
+            color: #A51C30;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .absence-reason {
+            color: #888;
+            font-size: 0.8rem;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        
+        .filters button {
+            background: white;
+            border: 1px solid #E0E0E0;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .filters button.active {
+            background: #A51C30;
+            border-color: #A51C30;
+            color: white;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+        }
+        
+        @media (max-width: 768px) {
+            .journal-table {
+                font-size: 0.75rem;
+                min-width: 500px;
+            }
+            .journal-table th,
+            .journal-table td {
+                padding: 6px 4px;
+            }
+            .absence-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <img src="фото/IMG_1754.PNG" alt="Логотип" class="site-logo">
+                <h1>ПК МУКР <span>| Группа ПКС-7-24</span></h1>
+            </div>
+        </div>
+    </header>
+    <nav class="nav">
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="study.html">Конспекты и задания</a></li>
+                <li><a href="nb.html">Предупреждения</a></li>
+                <li><a href="absences.html" class="active">Пропуски</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h2 id="totalAbsences">0</h2>
+                <h3>Всего пропусков (пар)</h3>
+            </div>
+            <div class="stat-card">
+                <h2 id="totalHours">0</h2>
+                <h3>Всего часов</h3>
+            </div>
+            <div class="stat-card">
+                <h2 id="avgHours">0</h2>
+                <h3>Сред. часов за пропуск</h3>
+            </div>
+        </div>
+
+        <div class="view-toggle">
+            <button id="listViewBtn" class="active">Список по дням</button>
+            <button id="journalViewBtn">Журнал (студенты × даты)</button>
+        </div>
+
+        <div id="listContainer"></div>
+        <div id="journalContainer" style="display: none;"></div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-copyright">© 2026 ПК МУКР • Группа ПКС-7-24</div>
+                <div class="footer-dev">
+                    <span class="dev-label">Developer:</span>
+                    <a href="https://www.instagram.com/ch1kosni?igsh=bHgxNm5nY3ZhY2h4&utm_source=qr" class="dev-name">chikosi</a>
+                    <span class="dev-heart">❤️</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script type="module" src="absences.js"></script>
+</body>
+
+</html>

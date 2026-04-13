@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Политехнический колледж | ПКС 7-24</title>
+    <link rel="icon" type="image/png" href="фото/IMG_1754.PNG">
+    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+
+<body>
+
+
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <img src="фото/IMG_1754.PNG" alt="Логотип ПКС-7-24" class="site-logo">
+                <div class="logo-text">
+                    <h1>ПК МУКР <span>| Группа ПКС-7-24</span></h1>
+                    <p>Техники-Программисты</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card fade-in">
+            <div class="card-header">
+                <h3>⚠️ Успеваемость и дисциплина</h3>
+                <span class="icon">⚖️</span>
+            </div>
+            <div id="warnings-stats-list">
+                <!-- Тут динамически выводятся данные -->
+            </div>
+            <div id="warnings-stats-footer" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #F0F0F0;">
+                <!-- Тут футер -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Скрипт подключаем после всего контента -->
+    <script type="module" src="warnings-stats.js"></script>

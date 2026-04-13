@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Предупреждения | ПКС-7-24</title>
+    <link rel="icon" type="image/png" href="фото/IMG_1754.PNG">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <img src="фото/IMG_1754.PNG" alt="Логотип" class="site-logo">
+                <h1>ПК МУКР <span>| Группа ПКС-7-24</span></h1>
+            </div>
+        </div>
+    </header>
+    <nav class="nav">
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="study.html">Конспекты и задания</a></li>
+                <li><a href="nb.html" class="active">Предупреждения</a></li>
+                <li><a href="absences.html">Пропуски</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main class="container">
+        <div class="stats-grid" id="stats">
+            <div class="stat-card">
+                <h2 id="totalCount">0</h2>
+                <h3>Всего варнов</h3>
+            </div>
+            <div class="stat-card">
+                <h2 id="todayCount">0</h2>
+                <h3>Сегодня</h3>
+            </div>
+            <div class="stat-card">
+                <h2 id="weekCount">0</h2>
+                <h3>Неделя</h3>
+            </div>
+        </div>
+        <div class="filters">
+            <button data-filter="all" class="active">Все</button>
+            <button data-filter="today">Сегодня</button>
+            <button data-filter="week">Неделя</button>
+            <button data-filter="month">Месяц</button>
+        </div>
+        <div id="daysContainer"></div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-copyright">
+                    © 2026 ПК МУКР • Группа ПКС-7-24
+                </div>
+                <div class="footer-dev">
+                    <span class="dev-label">Developer:</span>
+                    <a href="https://www.instagram.com/ch1kosni?igsh=bHgxNm5nY3ZhY2h4&utm_source=qr" class="dev-name">chikosi</a>
+                    <span class="dev-heart">❤️</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script type="module" src="nb.js"></script>
+</body>
+
+</html>

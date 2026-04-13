@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учебные материалы | ПКС-7-24</title>
+    <link rel="icon" type="image/png" href="фото/IMG_1754.PNG">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <img src="фото/IMG_1754.PNG" alt="Логотип ПКС-7-24" class="site-logo">
+                <div class="logo-text">
+                    <h1>ПК МУКР <span>| Группа ПКС-7-24</span></h1>
+                    <p>Техники-Программисты</p>
+                </div>
+            </div>
+            <div class="student-info">
+
+                <div class="student-info-text">
+                    <div class="name">Бардыгулова Н.Д.</div>
+                    <div class="role">Куратор группы</div>
+                    <div class="name">Курманбеков Ч.Э.</div>
+                    <div class="role">Староста группы</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="container">
+            <ul>
+                <li><a href="index.html" class="active">Главная</a></li>
+                <li><a href="study.html">Конспекты и задания</a></li>
+                <li><a href="nb.html">Предупреждения</a></li>
+                <li><a href="absences.html">Пропуски</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Блок ДЗ (без кнопки добавления) -->
+        <div class="homework-section fade-in" id="homework">
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.8rem;">📚 Домашние задания и дедлайны</h3>
+            </div>
+            <table class="homework-table">
+                <thead>
+                    <tr>
+                        <th>Предмет</th>
+                        <th>Задание</th>
+                        <th>Дедлайн</th>
+                    </tr>
+                </thead>
+                <tbody id="homework-body">
+                    <!-- Сюда students.js загрузит данные из Firebase -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="notes-grid">
+            <div class="subject-folder">
+                <h4>КГ</h4>
+                <ul class="file-list">
+                    <li><a href="files/КГ/лекция1.pdf" target="_blank" class="file-item">📄 Лекция 1</a></li>
+                    <li><a href="files/КГ/методичка.docx" target="_blank" class="file-item">📄 Методичка</a></li>
+                </ul>
+            </div>
+            <div class="subject-folder">
+                <h4>ТА</h4>
+                <ul class="file-list">
+                    <li><a href="files/ТА/лекция1.pdf" target="_blank" class="file-item">📄 Лекция 1</a></li>
+                    <li><a href="files/ТА/методичка.docx" target="_blank" class="file-item">📄 Методичка</a></li>
+                </ul>
+            </div>
+            <div class="subject-folder">
+                <h4>ТСИ</h4>
+                <ul class="file-list">
+                    <li><a href="files/ТСИ/лекция1.pdf" target="_blank" class="file-item">📄 Лекция 1</a></li>
+                    <li><a href="files/ТСИ/методичка.docx" target="_blank" class="file-item">📄 Методичка</a></li>
+                </ul>
+            </div>
+            <div class="subject-folder">
+                <h4>БЖД</h4>
+                <ul class="file-list">
+                    <li><a href="resp/Темы по БЖД.pdf" target="_blank" class="file-item">📄 Лекции БЖД</a></li>
+                </ul>
+            </div>
+            <div class="subject-folder">
+                <h4>Кыргызский язык</h4>
+                <ul class="file-list">
+                    <li><a href="files/Кыргызский язык/лекция1.pdf" target="_blank" class="file-item">📄 Лекция 1</a></li>
+                    <li><a href="files/Кыргызский язык/методичка.docx" target="_blank" class="file-item">📄 Методичка</a></li>
+                </ul>
+            </div>
+            <div class="subject-folder">
+                <h4>История Кыргызстана</h4>
+                <ul class="file-list">
+                    <li><a href="files/История Кыргызстана/лекция1.pdf" target="_blank" class="file-item">📄 Лекция 1</a></li>
+                    <li><a href="files/История Кыргызстана/методичка.docx" target="_blank" class="file-item">📄 Методичка</a></li>
+                </ul>
+            </div>
+            <div class="subject-folder">
+                <h4>Физическая культура</h4>
+                <ul class="file-list">
+                    <li><a href="files/Физическая культура/лекция1.pdf" target="_blank" class="file-item">📄 Лекция 1</a></li>
+                    <li><a href="files/Физическая культура/методичка.docx" target="_blank" class="file-item">📄 Методичка</a></li>
+                </ul>
+            </div>
+            <div class="subject-folder">
+                <h4>География</h4>
+                <ul class="file-list">
+                    <li><a href="resp/Темы по Географии.pdf" target="_blank" class="file-item">📄 Темы лекций География</a></li>
+                </ul>
+            </div>
+            <div class="subject-folder">
+                <h4>Английский язык</h4>
+                <ul class="file-list">
+                    <li><a href="files/Английский язык/лекция1.pdf" target="_blank" class="file-item">📄 Лекция 1</a></li>
+                    <li><a href="files/Английский язык/методичка.docx" target="_blank" class="file-item">📄 Методичка</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-copyright">
+                    © 2026 ПК МУКР • Группа ПКС-7-24
+                </div>
+                <div class="footer-dev">
+                    <span class="dev-label">Developer:</span>
+                    <a href="#" class="dev-name">chikosi</a>
+                    <span class="dev-heart">❤️</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Только скрипты для загрузки данных (без модалок) -->
+    <script type="module" src="students.js"></script>
+</body>
+
+</html>

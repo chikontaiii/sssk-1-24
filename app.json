@@ -1,0 +1,64 @@
+{
+    "users": {
+        "user_id_123": {
+            "fullName": "Курманбеков Чынтемир",
+            "role": "admin",
+            "email": "kurmanbekovcyntemir@gmail.com",
+            "points": 245,
+            "warnings": 0
+        },
+        "user_id_456": {
+            "fullName": "Обычный Студент",
+            "role": "student",
+            "email": "student@college.edu",
+            "points": 15,
+            "warnings": 1
+        }
+    },
+
+    "homework": {
+        "hw_id_001": {
+            "subject": "Программирование",
+            "task": "Циклы и функции Python",
+            "deadline": "2026-03-15",
+            "assignee": "Козлов Д.",
+            "status": "in_progress"
+        }
+    },
+
+    "announcements": {
+        "ann_id_001": {
+            "title": "Список отличников",
+            "date": "2026-03-11",
+            "tag": "Важно",
+            "text": "Поздравляем студентов..."
+        }
+    },
+
+    "schedule": {
+        "monday": {
+            "classes": [
+                { "subject": "ТСИ", "time": "09:00 - 10:30", "room": "Ауд. 305" },
+                { "subject": "ТА", "time": "10:45 - 12:15", "room": "Ауд. 205" }
+            ]
+        }
+    },
+
+    "notes": {
+        "note_id_001": {
+            "subject": "Программирование",
+            "fileName": "Лекция 1: Основы Python.pdf",
+            "fileUrl": "https://firebasestorage.googleapis.com/...",
+            "type": "document"
+        }
+    },
+
+    "events": {
+        "event_id_001": {
+            "date": "2026-03-11",
+            "title": "Поездка в театр",
+            "location": "Главный корпус",
+            "status": "Требуется оплата"
+        }
+    }
+}

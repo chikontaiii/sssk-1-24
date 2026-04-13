@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админка | ПКС-7-24</title>
+    <link rel="icon" type="image/png" href="фото/IMG_1754.PNG">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8F7F4;
+            color: #2C3E4F;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        
+        .admin-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .admin-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        h2 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1.5rem;
+            color: #1E2B3A;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #2C3E4F;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #F0F0F0;
+            border-radius: 8px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #A51C30;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background: #A51C30;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #8B1829;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(165, 28, 48, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #A51C30;
+            color: #A51C30;
+            width: auto;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+        }
+        
+        .btn-outline:hover {
+            background: #A51C30;
+            color: white;
+        }
+        
+        #upload-progress {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: #F0F0F0;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        
+        .student-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        
+        .student-list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #F8F7F4;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+        
+        .login-overlay:not(.active) {
+            display: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .login-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .login-card h2 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-card p.subtitle {
+            color: #888;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        #app-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        #app-content.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        .login-card .form-group {
+            text-align: left;
+        }
+        
+        .login-card .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-card .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #F0F0F0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        #login-error {
+            color: #A51C30;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .admin-card {
+                padding: 1.5rem;
+            }
+            .login-card {
+                padding: 2rem;
+                margin: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .admin-card {
+                padding: 1rem;
+            }
+            h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Экран входа -->
+    <div id="login-screen" class="login-overlay active">
+        <div class="login-card">
+            <img src="фото/IMG_1754.PNG" alt="Логотип" style="width: 80px; margin-bottom: 1rem;">
+            <h2>Вход в админку</h2>
+            <p class="subtitle">Только для администраторов</p>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email-input" placeholder="Введите ваш email">
+            </div>
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <label>Пароль</label>
+                <input type="password" id="password-input" placeholder="Введите пароль">
+            </div>
+            <button id="login-btn" class="btn btn-primary">Войти</button>
+            <p id="login-error">Неверный email или пароль</p>
+        </div>
+    </div>
+
+    <!-- Основной контент админки -->
+    <div id="app-content">
+        <div class="admin-container">
+            <!-- Карточка добавления ДЗ -->
+            <div class="admin-card">
+                <h2>📚 Добавить домашнее задание</h2>
+                <div class="form-group">
+                    <label>Предмет</label>
+                    <input type="text" id="hw-subject" placeholder="Например: Программирование">
+                </div>
+                <div class="form-group">
+                    <label>Задание</label>
+                    <textarea id="hw-task" rows="2" placeholder="Описание задания"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Дедлайн</label>
+                    <input type="date" id="hw-deadline">
+                </div>
+                <div class="form-group">
+                    <label>Ответственный (студент)</label>
+                    <input type="text" id="hw-responsible" placeholder="ФИО или ник">
+                </div>
+                <button class="btn btn-primary" onclick="addHomework()">Добавить ДЗ</button>
+            </div>
+            <!-- Карточка добавления пропуска -->
+            <div class="admin-card">
+                <h2>📅 Добавить пропуск (отсутствие)</h2>
+                <div class="form-group">
+                    <label>Студент</label>
+                    <select id="absence-student" required>
+            <option value="">-- Выберите студента --</option>
+        </select>
+                </div>
+                <div class="form-group">
+                    <label>Дата пропуска</label>
+                    <input type="date" id="absence-date" value="2026-04-02">
+                </div>
+                <div class="form-group">
+                    <label>Пара (1-7)</label>
+                    <select id="absence-pair">
+            <option value="1">1 пара</option>
+            <option value="2">2 пара</option>
+            <option value="3">3 пара</option>
+            <option value="4">4 пара</option>
+            <option value="5">5 пара</option>
+            <option value="6">6 пара</option>
+            <option value="7">7 пара</option>
+        </select>
+                </div>
+                <div class="form-group">
+                    <label>Причина (опционально)</label>
+                    <textarea id="absence-reason" rows="2" placeholder="Например: болезнь"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="addAbsence()">Добавить пропуск</button>
+            </div>
+            <!-- Карточка добавления предупреждения -->
+            <div class="admin-card">
+                <h2>⚠️ Добавить предупреждение</h2>
+                <div class="form-group">
+                    <label>Студент</label>
+                    <select id="warn-student" required>
+                        <option value="">-- Выберите студента --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Предупреждение / причина</label>
+                    <textarea id="warn-text" rows="2" placeholder="Например: Опоздание на пару"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="addWarning()">Добавить предупреждение</button>
+            </div>
+
+            <!-- Карточка загрузки материалов -->
+            <div class="admin-card">
+                <h2>📁 Загрузить учебный материал</h2>
+                <div class="form-group">
+                    <label>Предмет</label>
+                    <select id="material-subject">
+                        <option value="ТСИ">ТСИ</option>
+                        <option value="КГ">КГ</option>
+                        <option value="ТА">ТА</option>
+                        <option value="Английский язык">Английский язык</option>
+                        <option value="История Кыргызстана">История Кыргызстана</option>
+                        <option value="География">География</option>
+                        <option value="Кыргызский язык">Кыргызский язык</option>
+                        <option value="БЖД">БЖД</option>
+                        <option value="Физическая культура">Физическая культура</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Тип материала</label>
+                    <select id="material-type">
+                        <option value="Конспект лекции">Конспект лекции</option>
+                        <option value="Отчет по лабораторной">Отчет по лабораторной</option>
+                        <option value="Фото/Скан">Фото/Скан</option>
+                        <option value="Доп. материалы">Доп. материалы</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Название (как будет отображаться)</label>
+                    <input type="text" id="material-name" placeholder="Например: Лекция 1: Основы Python">
+                </div>
+                <div class="form-group">
+                    <label>Выберите файл</label>
+                    <input type="file" id="material-file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                </div>
+                <button class="btn btn-primary" onclick="uploadMaterial()">Загрузить</button>
+                <div id="upload-progress" style="margin-top: 1rem; display: none;">Загрузка...</div>
+            </div>
+
+            <!-- Карточка управления студентами -->
+            <div class="admin-card">
+                <h2>👥 Список студентов</h2>
+                <div class="form-group">
+                    <label>Добавить студента</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="new-student-name" placeholder="ФИО студента" style="flex: 1;">
+                        <button class="btn btn-primary" onclick="addStudent()" style="width: auto;">Добавить</button>
+                    </div>
+                </div>
+                <div id="student-list">
+                    <!-- Сюда загружается список студентов -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Скрипты -->
+    <script type="module" src="firebase.js"></script>
+    <script type="module" src="app.js"></script>
+    <script type="module" src="admin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+
+</html>

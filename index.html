@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Политехнический колледж | ПКС 7-24</title>
+    <link rel="icon" type="image/png" href="фото/IMG_1754.PNG">
+    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+
+<body>
+
+
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <img src="фото/IMG_1754.PNG" alt="Логотип ПКС-7-24" class="site-logo">
+
+                <div class="logo-text">
+                    <h1>ПК МУКР <span>| Группа ПКС-7-24</span></h1>
+                    <p>Техники-Программисты</p>
+                </div>
+            </div>
+            <div class="student-info">
+                <div class="student-info-text">
+                    <div class="name">Бардыгулова Н.Д.</div>
+                    <div class="role">Куратор группы</div>
+                    <div class="name">Курманбеков Ч.Э.</div>
+                    <div class="role">Староста группы</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="container">
+            <ul>
+                <li><a href="index.html" class="active">Главная</a></li>
+                <li><a href="study.html">Конспекты и задания</a></li>
+                <li><a href="nb.html">Предупреждения</a></li>
+                <li><a href="absences.html">Пропуски</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="dashboard-grid">
+        </div>
+        <div class="card fade-in" id="schedule">
+            <div class="card-header">
+                <h3>📅 Расписание</h3>
+                <span class="icon">📚</span>
+            </div>
+            <div class="week-type-badge" id="week-type-badge"></div>
+            <div class="schedule-today">
+                <h4>Сегодня</h4>
+                <div id="today-schedule"></div>
+            </div>
+            <div class="schedule-tomorrow">
+                <h4>Завтра</h4>
+                <div id="tomorrow-schedule"></div>
+            </div>
+
+
+            <a href="https://pc.edu.kg/schedule/zamena.pdf" target="_blank" class="btn btn-outline" style="margin-top: 1rem; width: 100%; display: inline-block; text-align: center;">Посмотреть замены →</a>
+
+
+            <a href="resp/Расписание ПКС 7-24 2 курс 4 семестр 2025-2026.pdf" target="_blank" class="btn btn-outline" style="margin-top: 1rem; width: 100%; display: inline-block; text-align: center;">Посмотреть полное расписание →</a>
+        </div>
+        <div class="card fade-in info-card">
+            <div class="card-header">
+                <h3>Информация</h3>
+                <span class="icon">⚙️</span>
+            </div>
+            <div class="info-content">
+                <div class="info-title">Официальный сайт колледжа</div>
+                <a href="https://pc.edu.kg/" target="_blank" rel="noopener noreferrer" class="info-link">pc.edu.kg</a>
+            </div>
+        </div>
+        <div class="card fade-in">
+            <div class="card-header">
+                <h3>📢 Объявления</h3>
+                <span class="icon">📌</span>
+            </div>
+            <div class="announcement">
+                <div class="announcement-title">Список отличников 2026</div>
+                <div class="announcement-meta">
+                    <span>📅 02 Апр 2026</span>
+                    <span class="announcement-badge">Важно</span>
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">Поздравляем студентов, которые вошли в список лучших по итогам модулей!</p>
+            </div>
+            <div class="announcement">
+                <div class="announcement-title">Конференция в БФЭТ (регистрация)</div>
+                <div class="announcement-meta">
+                    <span>📅 02 Апр 2026</span>
+                    <span></span>
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">Крайний срок регистрации на конференцию в БФЭТ до 05 апреля 17:00 2026 года.</p>
+            </div>
+            <div class="announcement">
+                <div class="announcement-title">Конференция в БФЭТ</div>
+                <div class="announcement-meta">
+                    <span>📅 22 Апр 2026</span>
+                    <span>🏛️ Администрация</span>
+                </div>
+            </div>
+        </div>
+        <div class="fade-in" id="structure" style="margin: 4rem 0;">
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 2rem;">👥 Структура группы</h3>
+            <div class="roles-grid">
+                <div class="role-card">
+                    <div class="role-emoji">🔰</div>
+                    <div class="role-info">
+                        <h4>Курманбеков Чынтемир</h4>
+                        <p>Староста</p>
+                        <div class="contact">+996 771 144 441</div>
+                    </div>
+                </div>
+                <div class="role-card">
+                    <div class="role-emoji">🤝</div>
+                    <div class="role-info">
+                        <h4>Кочкомбаева Айдай</h4>
+                        <p>Заместитель старосты</p>
+                        <div class="contact">+996 706 190 508</div>
+                    </div>
+                </div>
+                <div class="role-card">
+                    <div class="role-emoji">⚖️</div>
+                    <div class="role-info">
+                        <h4>Харкей Арафат</h4>
+                        <p>Ответственный за дисциплину</p>
+                        <div class="contact">+996 509 999 097</div>
+                    </div>
+                </div>
+                <div class="role-card">
+                    <div class="role-emoji">🎉</div>
+                    <div class="role-info">
+                        <h4>Ашарбеков Мурат</h4>
+                        <p>Ответственный за мероприятия</p>
+                        <div class="contact">+996 708 516 539</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fade-in" id="events" style="margin: 4rem 0;">
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 2rem;">🎉 Предстоящие мероприятия</h3>
+            <div class="events-timeline">
+                <div class="event-item">
+                    <div class="event-date">
+                        <div class="event-day">31</div>
+                        <div class="event-month">МАРТА</div>
+                    </div>
+                    <div class="event-content">
+                        <div class="event-title">Выступление студентов в автомобильно-дорожном колледже им. К.Кольбаева</div>
+                        <div class="event-details">
+                            <span>📍 Автомобильно-дорожный колледж</span>
+                            <span>👥 Все 2 курсы</span>
+                            <span class="event-status"><a href="resp/Информационное письмо.pdf">Открыта регистрация</a></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-date">
+                        <div class="event-day">22</div>
+                        <div class="event-month">АПРЕЛЯ</div>
+                    </div>
+                    <div class="event-content">
+                        <div class="event-title">Конференция в Бишкекском финансово-экономическом техникуме имени А. Токтоналиева </div>
+                        <div class="event-details">
+                            <span>📍 Бишкекский финансово-экономический техникум</span>
+                            <span>👥 Все студенты</span>
+                            <span class="event-status"><a href="resp/БФЭТ Инфор письмо Конференция.pdf">Открыта регистрация</a></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-date">
+                        <div class="event-day">6</div>
+                        <div class="event-month">ИЮНЯ</div>
+                    </div>
+                    <div class="event-content">
+                        <div class="event-title">Групповая подготовка к сессии</div>
+                        <div class="event-details">
+                            <span>📍 Библиотека, Ауд. 301</span>
+                            <span>👥 Учебная группа</span>
+                            <span class="event-status"><a href="111">Обязательно</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="rating-section fade-in" id="rating">
+            <div class="rating-header">
+                <h3>⭐ Рейтинг активности</h3>
+                <span class="rating-semester">Весенний семестр 2026 М1</span>
+            </div>
+            <div class="rating-list">
+                <div class="rating-card">
+                    <div class="rating-rank">1</div>
+                    <div class="rating-name">Соромбаева Асель</div>
+                    <div class="rating-score">37.8 <span class="score-star">★</span></div>
+                </div>
+                <div class="rating-card">
+                    <div class="rating-rank">2</div>
+                    <div class="rating-name">Курманбеков Чынтемир</div>
+                    <div class="rating-score">37.2 <span class="score-star">★</span></div>
+                </div>
+                <div class="rating-card">
+                    <div class="rating-rank">3</div>
+                    <div class="rating-name">Ахмуллаева Рания</div>
+                    <div class="rating-score">36.8 <span class="score-star">★</span></div>
+                </div>
+                <div class="rating-card">
+                    <div class="rating-rank">4</div>
+                    <div class="rating-name">Кочкомбаева Айдай</div>
+                    <div class="rating-score">35.5 <span class="score-star">★</span></div>
+                </div>
+                <div class="rating-card">
+                    <div class="rating-rank">5</div>
+                    <div class="rating-name">Харкей Арафат</div>
+                    <div class="rating-score">35.3 <span class="score-star">★</span></div>
+                </div>
+                <div class="rating-card">
+                    <div class="rating-rank">6</div>
+                    <div class="rating-name">Наврузов Ярослав</div>
+                    <div class="rating-score">34.8 <span class="score-star">★</span></div>
+                </div>
+                <div class="rating-card">
+                    <div class="rating-rank">7</div>
+                    <div class="rating-name">Николаенко Руслан</div>
+                    <div class="rating-score">34.6 <span class="score-star">★</span></div>
+                </div>
+                <div class="rating-card">
+                    <div class="rating-rank">8</div>
+                    <div class="rating-name">Арыкбаев Илгиз</div>
+                    <div class="rating-score">33 <span class="score-star">★</span></div>
+                </div>
+                <div class="rating-card">
+                    <div class="rating-rank">9</div>
+                    <div class="rating-name">Кубанычбеков Амир</div>
+                    <div class="rating-score">32.8 <span class="score-star">★</span></div>
+                </div>
+                <div class="rating-card">
+                    <div class="rating-rank">10</div>
+                    <div class="rating-name">Салиев Кутманбек</div>
+                    <div class="rating-score">30.7 <span class="score-star">★</span></div>
+                </div>
+            </div>
+            <div class="rating-tip">
+                <p>Средние баллы топ 10 студентов без учета Истории Кыргызстана</p>
+                <p>🎯 Как заработать баллы: посещаемость, помощь с ДЗ, активность на парах, участие в мероприятиях.</p>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-copyright">
+                    © 2026 ПК МУКР • Группа ПКС-7-24
+                </div>
+                <div class="footer-dev">
+                    <span class="dev-label">Developer:</span>
+                    <a href="https://www.instagram.com/ch1kosni?igsh=bHgxNm5nY3ZhY2h4&utm_source=qr" class="dev-name">chikosi</a>
+                    <span class="dev-heart">❤️</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="schedule.js?v=999"></script>
+    <script type="module" src="warnings-stats.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>
