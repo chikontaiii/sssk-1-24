@@ -2,13 +2,19 @@ import { db } from "./firebase.js";
 import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 let allAbsences = [];
+let allStudents = [];
 
-async function loadAbsences() {
-    const q = query(collection(db, "absences"), orderBy("date", "desc"));
-    const snapshot = await getDocs(q);
-    allAbsences = snapshot.docs.map(doc => doc.data());
+async function loadData() {
+    const qAbs = query(collection(db, "absences"), orderBy("date", "desc"));
+    const snapAbs = await getDocs(qAbs);
+    allAbsences = snapAbs.docs.map(doc => doc.data());
+
+    const snapStudents = await getDocs(collection(db, "students"));
+    allStudents = snapStudents.docs.map(doc => doc.data().name);
+    allStudents.sort((a, b) => a.localeCompare(b, 'ru'));
+
     updateStats();
-    renderByFilter(getActiveFilter());
+    renderListView(getActiveFilter());
 }
 
 function getActiveFilter() {
@@ -42,14 +48,31 @@ function filterAbsencesByPeriod(period) {
     return allAbsences;
 }
 
-function groupByDate(absences) {
+function groupByDateAndStudent(absences) {
     const groups = {};
     absences.forEach(a => {
-        if (!groups[a.date]) groups[a.date] = [];
-        groups[a.date].push(a);
+        const date = a.date;
+        const student = a.student;
+        const pair = a.pair;
+        const hours = a.hours || pair * 2; // на случай старых записей
+        if (!groups[date]) groups[date] = {};
+        if (!groups[date][student]) groups[date][student] = [];
+        groups[date][student].push({ pair, hours });
     });
-    const sortedDates = Object.keys(groups).sort((a, b) => new Date(b) - new Date(a));
-    return sortedDates.map(date => ({ date, items: groups[date] }));
+    const result = [];
+    Object.keys(groups).sort((a, b) => new Date(b) - new Date(a)).forEach(date => {
+        const studentsList = [];
+        Object.keys(groups[date]).forEach(student => {
+            const items = groups[date][student];
+            items.sort((x, y) => x.pair - y.pair);
+            const pairs = items.map(i => i.pair);
+            const totalHours = items.reduce((sum, i) => sum + i.hours, 0);
+            studentsList.push({ student, pairs, totalHours });
+        });
+        studentsList.sort((a, b) => a.student.localeCompare(b.student, 'ru'));
+        result.push({ date, students: studentsList });
+    });
+    return result;
 }
 
 function formatDate(isoDate) {
@@ -67,10 +90,10 @@ function escapeHtml(str) {
     });
 }
 
-function renderByFilter(filter) {
+function renderListView(filter) {
     const filtered = filterAbsencesByPeriod(filter);
-    const grouped = groupByDate(filtered);
-    const container = document.getElementById('daysContainer');
+    const grouped = groupByDateAndStudent(filtered);
+    const container = document.getElementById('listContainer');
     if (grouped.length === 0) {
         container.innerHTML = '<div class="empty-message">Нет пропусков за выбранный период</div>';
         return;
@@ -79,26 +102,89 @@ function renderByFilter(filter) {
         <div class="absence-day">
             <div class="absence-day-header">${formatDate(day.date)}</div>
             <ul class="absence-list">
-                ${day.items.map(item => `
-                    <li class="absence-item">
-                        <span class="student-name">${escapeHtml(item.student)}</span>
-                        <div class="absence-details">
-                            <span class="absence-pair">${item.pair} пара (${item.hours} ч.)</span>
-                            ${item.reason ? `<span class="absence-reason">${escapeHtml(item.reason)}</span>` : ''}
-                        </div>
-                    </li>
-                `).join('')}
+                ${day.students.map(student => {
+                    const pairsText = student.pairs.map(p => `${p}п`).join(', ');
+                    return `
+                        <li class="absence-item">
+                            <span class="student-name">${escapeHtml(student.student)}</span>
+                            <div class="absence-details">
+                                <span class="absence-pair">${pairsText} (${student.totalHours} ч.)</span>
+                            </div>
+                        </li>
+                    `;
+                }).join('')}
             </ul>
         </div>
     `).join('');
 }
 
+// ========== ЖУРНАЛ (таблица) ==========
+function renderJournal() {
+    const allDatesSet = new Set();
+    allAbsences.forEach(a => allDatesSet.add(a.date));
+    const allDates = Array.from(allDatesSet).sort((a,b) => new Date(a) - new Date(b));
+    if (allDates.length === 0) {
+        document.getElementById('journalContainer').innerHTML = '<div class="empty-message">Нет данных для отображения</div>';
+        return;
+    }
+
+    const journalData = {};
+    allStudents.forEach(student => { journalData[student] = {}; });
+    allAbsences.forEach(absence => {
+        const student = absence.student;
+        const date = absence.date;
+        const hours = absence.hours || absence.pair * 2;
+        if (journalData[student]) {
+            if (!journalData[student][date]) journalData[student][date] = 0;
+            journalData[student][date] += hours;
+        }
+    });
+
+    let html = '<div class="journal-container"><table class="journal-table"><thead><tr><th class="student-col">Студент</th>';
+    allDates.forEach(date => html += `<th>${formatDate(date)}</th>`);
+    html += '</tr></thead><tbody>';
+    allStudents.forEach(student => {
+        html += `<tr><td class="student-col">${escapeHtml(student)}</td>`;
+        allDates.forEach(date => {
+            const totalHours = journalData[student]?.[date] || 0;
+            if (totalHours > 0) {
+                html += `<td><span class="absence-mark">${totalHours} ч.</span></td>`;
+            } else {
+                html += `<td><span class="empty-mark">—</span></td>`;
+            }
+        });
+        html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    document.getElementById('journalContainer').innerHTML = html;
+}
+
+// Переключение видов
+document.getElementById('listViewBtn').addEventListener('click', () => {
+    document.getElementById('listViewBtn').classList.add('active');
+    document.getElementById('journalViewBtn').classList.remove('active');
+    document.getElementById('listContainer').style.display = 'block';
+    document.getElementById('journalContainer').style.display = 'none';
+    renderListView(getActiveFilter());
+});
+
+document.getElementById('journalViewBtn').addEventListener('click', () => {
+    document.getElementById('journalViewBtn').classList.add('active');
+    document.getElementById('listViewBtn').classList.remove('active');
+    document.getElementById('listContainer').style.display = 'none';
+    document.getElementById('journalContainer').style.display = 'block';
+    renderJournal();
+});
+
+// Фильтры
 document.querySelectorAll('.filters button').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        renderByFilter(btn.dataset.filter);
+        if (document.getElementById('listViewBtn').classList.contains('active')) {
+            renderListView(btn.dataset.filter);
+        }
     });
 });
 
-loadAbsences();
+loadData();
