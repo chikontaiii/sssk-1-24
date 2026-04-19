@@ -49,7 +49,7 @@ function filterAbsencesByPeriod(period) {
 }
 
 function groupByDateAndStudent(absences) {
-    const groups = {}; // { date: { student: [pairs] } }
+    const groups = {};
     absences.forEach(a => {
         const date = a.date;
         const student = a.student;
@@ -58,7 +58,6 @@ function groupByDateAndStudent(absences) {
         if (!groups[date][student]) groups[date][student] = [];
         groups[date][student].push(pair);
     });
-    // Преобразуем в массив для удобного рендеринга
     const result = [];
     Object.keys(groups).sort((a, b) => new Date(b) - new Date(a)).forEach(date => {
         const studentsList = [];
@@ -66,7 +65,6 @@ function groupByDateAndStudent(absences) {
             const pairs = groups[date][student].sort((a, b) => a - b);
             studentsList.push({ student, pairs });
         });
-        // Сортируем студентов по имени
         studentsList.sort((a, b) => a.student.localeCompare(b.student, 'ru'));
         result.push({ date, students: studentsList });
     });
@@ -117,7 +115,7 @@ function renderListView(filter) {
     `).join('');
 }
 
-// ========== ЖУРНАЛ (уже группирует правильно, оставляем как есть) ==========
+// ========== ЖУРНАЛ (таблица) ==========
 function renderJournal() {
     const allDatesSet = new Set();
     allAbsences.forEach(a => allDatesSet.add(a.date));
@@ -154,7 +152,7 @@ function renderJournal() {
                 html += `<td><span class="empty-mark">—</span></td>`;
             }
         });
-        html += '</tr>';
+        html += '<tr>';
     });
     html += '</tbody></table></div>';
     document.getElementById('journalContainer').innerHTML = html;
