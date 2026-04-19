@@ -90,6 +90,7 @@ function escapeHtml(str) {
     });
 }
 
+// Список по дням: пары + часы в скобках
 function renderListView(filter) {
     const filtered = filterAbsencesByPeriod(filter);
     const grouped = groupByDateAndStudent(filtered);
@@ -118,7 +119,7 @@ function renderListView(filter) {
     `).join('');
 }
 
-// ========== ЖУРНАЛ (таблица) ==========
+// Журнал (таблица): только пары, без часов
 function renderJournal() {
     const allDatesSet = new Set();
     allAbsences.forEach(a => allDatesSet.add(a.date));
@@ -133,10 +134,10 @@ function renderJournal() {
     allAbsences.forEach(absence => {
         const student = absence.student;
         const date = absence.date;
-        const hours = absence.hours || absence.pair * 2;
+        const pair = absence.pair;
         if (journalData[student]) {
-            if (!journalData[student][date]) journalData[student][date] = 0;
-            journalData[student][date] += hours;
+            if (!journalData[student][date]) journalData[student][date] = [];
+            journalData[student][date].push(pair);
         }
     });
 
@@ -146,9 +147,11 @@ function renderJournal() {
     allStudents.forEach(student => {
         html += `<tr><td class="student-col">${escapeHtml(student)}</td>`;
         allDates.forEach(date => {
-            const totalHours = journalData[student]?.[date] || 0;
-            if (totalHours > 0) {
-                html += `<td><span class="absence-mark">${totalHours} ч.</span></td>`;
+            const pairs = journalData[student]?.[date];
+            if (pairs && pairs.length) {
+                pairs.sort((a,b) => a - b);
+                const pairsText = pairs.map(p => `${p}п`).join(', ');
+                html += `<td><span class="absence-mark">${pairsText}</span></td>`;
             } else {
                 html += `<td><span class="empty-mark">—</span></td>`;
             }
