@@ -2,6 +2,7 @@ import { db } from "./firebase.js";
 import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 let allWarnings = [];
+let observer;
 
 async function loadWarnings() {
     const q = query(collection(db, "warnings"), orderBy("date", "desc"));
@@ -9,11 +10,36 @@ async function loadWarnings() {
     allWarnings = snapshot.docs.map(doc => doc.data());
     updateStats();
     renderByFilter(getActiveFilter());
+    setupScrollObserver();
 }
 
 function getActiveFilter() {
     const activeBtn = document.querySelector('.filters button.active');
     return activeBtn ? activeBtn.dataset.filter : 'all';
+}
+
+// ========== ПЛАВНЫЙ СЧЁТЧИК ==========
+function animateNumber(elementId, newValue) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const start = parseInt(el.innerText) || 0;
+    if (start === newValue) return;
+    const duration = 600;
+    const stepTime = 20;
+    const steps = duration / stepTime;
+    const increment = (newValue - start) / steps;
+    let current = start;
+    let step = 0;
+    const timer = setInterval(() => {
+        step++;
+        current += increment;
+        if (step >= steps) {
+            el.innerText = newValue;
+            clearInterval(timer);
+        } else {
+            el.innerText = Math.round(current);
+        }
+    }, stepTime);
 }
 
 function updateStats() {
@@ -23,9 +49,9 @@ function updateStats() {
     const weekAgo = new Date();
     weekAgo.setDate(weekAgo.getDate() - 7);
     const weekCount = allWarnings.filter(w => new Date(w.date) >= weekAgo).length;
-    document.getElementById('totalCount').innerText = total;
-    document.getElementById('todayCount').innerText = todayCount;
-    document.getElementById('weekCount').innerText = weekCount;
+    animateNumber('totalCount', total);
+    animateNumber('todayCount', todayCount);
+    animateNumber('weekCount', weekCount);
 }
 
 function filterWarningsByPeriod(period) {
@@ -79,7 +105,7 @@ function renderByFilter(filter) {
         return;
     }
     container.innerHTML = grouped.map(day => `
-        <div class="nb-day">
+        <div class="nb-day fade-on-scroll">
             <div class="nb-day-header">${formatDate(day.date)}</div>
             <ul class="nb-list">
                 ${day.items.map(item => `
@@ -91,6 +117,27 @@ function renderByFilter(filter) {
             </ul>
         </div>
     `).join('');
+    observeNewElements();
+}
+
+// ========== НАБЛЮДАТЕЛЬ ЗА ПОЯВЛЕНИЕМ БЛОКОВ ==========
+function setupScrollObserver() {
+    observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+    observeNewElements();
+}
+
+function observeNewElements() {
+    if (!observer) return;
+    document.querySelectorAll('.fade-on-scroll:not(.observed)').forEach(el => {
+        observer.observe(el);
+        el.classList.add('observed');
+    });
 }
 
 // Обработчики фильтров
