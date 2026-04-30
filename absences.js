@@ -146,14 +146,17 @@ function renderListView(filter) {
 }
 
 function renderJournal() {
+    // 1. Собираем все уникальные даты из пропусков
     const allDatesSet = new Set();
     allAbsences.forEach(a => allDatesSet.add(a.date));
     const allDates = Array.from(allDatesSet).sort((a,b) => new Date(a) - new Date(b));
+
     if (allDates.length === 0) {
         document.getElementById('journalContainer').innerHTML = '<div class="empty-message">Нет данных для отображения</div>';
         return;
     }
 
+    // 2. Строим объект: студент -> дата -> массив пар
     const journalData = {};
     allStudents.forEach(student => { journalData[student] = {}; });
     allAbsences.forEach(absence => {
@@ -166,9 +169,13 @@ function renderJournal() {
         }
     });
 
+    // 3. Формируем HTML таблицы
     let html = '<div class="journal-container"><table class="journal-table"><thead><tr><th class="student-col">Студент</th>';
-    allDates.forEach(date => html += `<th>${formatDate(date)}</th>`);
-    html += '</table></thead><tbody>';
+    allDates.forEach(date => {
+        html += `<th>${formatDate(date)}</th>`;
+    });
+    html += '</tr></thead><tbody>';
+
     allStudents.forEach(student => {
         html += `<tr><td class="student-col">${escapeHtml(student)}</td>`;
         allDates.forEach(date => {
@@ -185,6 +192,8 @@ function renderJournal() {
     });
     html += '</tbody></table></div>';
     document.getElementById('journalContainer').innerHTML = html;
+
+    // 4. Добавляем анимацию появления для новых элементов
     observeNewElements();
 }
 
