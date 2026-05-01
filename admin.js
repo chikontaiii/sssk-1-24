@@ -1,8 +1,7 @@
 import { db } from "./firebase.js";
-import { collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 // ========== УПРАВЛЕНИЕ СТУДЕНТАМИ ==========
-
 async function loadStudentsToSelect() {
     const studentSelect = document.getElementById('warn-student');
     if (!studentSelect) return;
@@ -12,7 +11,6 @@ async function loadStudentsToSelect() {
     snapshot.forEach(doc => {
         students.push({ id: doc.id, name: doc.data().name });
     });
-    // Сортировка по имени (русские буквы корректно)
     students.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
 
     studentSelect.innerHTML = '<option value="">-- Выберите студента --</option>';
@@ -45,7 +43,7 @@ async function displayStudentList() {
         div.style.padding = '0.5rem 0';
         div.style.borderBottom = '1px solid #F0F0F0';
         div.innerHTML = `
-            <span>${student.name}</span>
+            <span>${escapeHtml(student.name)}</span>
             <button class="btn btn-outline" style="padding: 0.2rem 0.6rem; width: auto;" onclick="deleteStudent('${student.id}')">Удалить</button>
         `;
         container.appendChild(div);
@@ -127,13 +125,58 @@ window.addWarning = async function() {
         });
         alert('Предупреждение добавлено!');
         document.getElementById('warn-text').value = '';
+        loadWarningsForManagement(); // обновляем список предупреждений после добавления
+    } catch (error) {
+        alert('Ошибка: ' + error.message);
+    }
+};
+
+// ========== УПРАВЛЕНИЕ ПРЕДУПРЕЖДЕНИЯМИ (список + удаление) ==========
+async function loadWarningsForManagement() {
+    const container = document.getElementById('warnings-manage-list');
+    if (!container) return;
+
+    const q = query(collection(db, "warnings"), orderBy("date", "desc"));
+    const snapshot = await getDocs(q);
+    const warnings = [];
+    snapshot.forEach(doc => warnings.push({ id: doc.id, ...doc.data() }));
+
+    if (warnings.length === 0) {
+        container.innerHTML = '<p>Нет предупреждений</p>';
+        return;
+    }
+
+    let html = '<table style="width:100%; border-collapse: collapse;">';
+    html += '<thead><tr><th>Дата</th><th>Студент</th><th>Предупреждение</th><th>Действие</th></tr></thead><tbody>';
+    warnings.forEach(w => {
+        html += `
+            <tr style="border-bottom:1px solid #F0F0F0;">
+                <td style="padding:0.5rem;">${w.date || ''}</td>
+                <td style="padding:0.5rem;">${escapeHtml(w.student)}</td>
+                <td style="padding:0.5rem;">${escapeHtml(w.warning)}</td>
+                <td style="padding:0.5rem;">
+                    <button class="btn btn-outline" onclick="deleteWarning('${w.id}')" style="padding:0.2rem 0.6rem;">Удалить</button>
+                </td>
+            </tr>
+        `;
+    });
+    html += '</tbody></table>';
+    container.innerHTML = html;
+}
+
+window.deleteWarning = async function(warningId) {
+    if (!confirm('Удалить предупреждение?')) return;
+    try {
+        await deleteDoc(doc(db, "warnings", warningId));
+        alert('Предупреждение удалено');
+        loadWarningsForManagement(); // обновляем список
+        // Если нужно, можно также обновить статистику на главной, но она обновится при следующей загрузке
     } catch (error) {
         alert('Ошибка: ' + error.message);
     }
 };
 
 // ========== ПРОПУСКИ (ОТСУТСТВИЯ) ==========
-// Загрузка студентов для выпадающего списка пропусков
 async function loadStudentsForAbsence() {
     const select = document.getElementById('absence-student');
     if (!select) return;
@@ -150,7 +193,6 @@ async function loadStudentsForAbsence() {
     });
 }
 
-// Добавление пропуска
 window.addAbsence = async function() {
     const studentSelect = document.getElementById('absence-student');
     const student = studentSelect.value;
@@ -163,7 +205,7 @@ window.addAbsence = async function() {
         return;
     }
 
-    const hours = pair * 2; // часы = номер пары × 2
+    const hours = 2; // 1 пара = 2 часа
 
     try {
         await addDoc(collection(db, "absences"), {
@@ -182,10 +224,7 @@ window.addAbsence = async function() {
     }
 };
 
-// Вызвать загрузку студентов для пропусков при инициализации
-loadStudentsForAbsence();
-
-// ========== ЗАГРУЗКА ФАЙЛОВ ==========
+// ========== ЗАГРУЗКА ФАЙЛОВ (прокси) ==========
 const PROXY_URL = 'https://pks-upload-proxy-qear.vercel.app/api/upload';
 
 window.uploadMaterial = async function() {
@@ -238,6 +277,19 @@ window.uploadMaterial = async function() {
     }
 };
 
+// ========== ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ==========
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+    });
+}
+
 // ========== ИНИЦИАЛИЗАЦИЯ ==========
 loadStudentsToSelect();
 displayStudentList();
+loadStudentsForAbsence();
+loadWarningsForManagement(); // ← загружаем список предупреждений в админке
