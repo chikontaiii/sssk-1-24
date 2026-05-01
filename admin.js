@@ -1,8 +1,18 @@
 import { db } from "./firebase.js";
 import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-// ========== УПРАВЛЕНИЕ СТУДЕНТАМИ ==========
+// ========== ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ==========
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+    });
+}
 
+// ========== УПРАВЛЕНИЕ СТУДЕНТАМИ ==========
 async function loadStudentsToSelect() {
     const studentSelect = document.getElementById('warn-student');
     if (!studentSelect) return;
@@ -12,7 +22,6 @@ async function loadStudentsToSelect() {
     snapshot.forEach(doc => {
         students.push({ id: doc.id, name: doc.data().name });
     });
-    // Сортировка по имени (русские буквы корректно)
     students.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
 
     studentSelect.innerHTML = '<option value="">-- Выберите студента --</option>';
@@ -45,7 +54,7 @@ async function displayStudentList() {
         div.style.padding = '0.5rem 0';
         div.style.borderBottom = '1px solid #F0F0F0';
         div.innerHTML = `
-            <span>${student.name}</span>
+            <span>${escapeHtml(student.name)}</span>
             <button class="btn btn-outline" style="padding: 0.2rem 0.6rem; width: auto;" onclick="deleteStudent('${student.id}')">Удалить</button>
         `;
         container.appendChild(div);
@@ -127,10 +136,12 @@ window.addWarning = async function() {
         });
         alert('Предупреждение добавлено!');
         document.getElementById('warn-text').value = '';
+        loadWarningsForManagement();
     } catch (error) {
         alert('Ошибка: ' + error.message);
     }
 };
+
 // ========== УПРАВЛЕНИЕ ПРЕДУПРЕЖДЕНИЯМИ ==========
 async function loadWarningsForManagement() {
     const container = document.getElementById('warnings-manage-list');
@@ -169,17 +180,13 @@ window.deleteWarning = async function(warningId) {
     try {
         await deleteDoc(doc(db, "warnings", warningId));
         alert('Предупреждение удалено');
-        loadWarningsForManagement(); // обновить список
+        loadWarningsForManagement();
     } catch (error) {
         alert('Ошибка: ' + error.message);
     }
 };
 
-// Вызвать загрузку предупреждений при инициализации
-
-
-// ========== ПРОПУСКИ (ОТСУТСТВИЯ) ==========
-// Загрузка студентов для выпадающего списка пропусков
+// ========== ПРОПУСКИ ==========
 async function loadStudentsForAbsence() {
     const select = document.getElementById('absence-student');
     if (!select) return;
@@ -196,7 +203,6 @@ async function loadStudentsForAbsence() {
     });
 }
 
-// Добавление пропуска
 window.addAbsence = async function() {
     const studentSelect = document.getElementById('absence-student');
     const student = studentSelect.value;
@@ -209,7 +215,7 @@ window.addAbsence = async function() {
         return;
     }
 
-    const hours = pair * 2; // часы = номер пары × 2
+    const hours = pair * 2;
 
     try {
         await addDoc(collection(db, "absences"), {
@@ -227,9 +233,6 @@ window.addAbsence = async function() {
         alert('Ошибка: ' + error.message);
     }
 };
-
-// Вызвать загрузку студентов для пропусков при инициализации
-loadStudentsForAbsence();
 
 // ========== ЗАГРУЗКА ФАЙЛОВ ==========
 const PROXY_URL = 'https://pks-upload-proxy-qear.vercel.app/api/upload';
@@ -287,4 +290,5 @@ window.uploadMaterial = async function() {
 // ========== ИНИЦИАЛИЗАЦИЯ ==========
 loadStudentsToSelect();
 displayStudentList();
+loadStudentsForAbsence();
 loadWarningsForManagement();
